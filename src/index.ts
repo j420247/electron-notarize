@@ -95,7 +95,9 @@ export async function waitForNotarize(opts: NotarizeWaitOptions): Promise<void> 
     ],
   );
   if (result.code !== 0) {
-    throw new Error(`Failed to check status of notarization request: ${opts.uuid}\n\n${result.output}`);
+    d(`Failed to check status of notarization request: ${opts.uuid}\n\n${result.output}`);
+    await new Promise(r => setTimeout(r, 30000));
+    return waitForNotarize(opts);
   }
   const notarizationInfo = parseNotarizationInfo(result.output);
 
